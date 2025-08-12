@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Enum\WindDirection;
+use App\Entity\WindDirection;
 use App\Repository\SessionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,7 +18,7 @@ class Session
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
+    #[ORM\Column (type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $date = null;
 
     #[ORM\Column(length: 255)]
@@ -30,8 +30,13 @@ class Session
     #[ORM\Column(type: Types::TIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $endTime = null;
 
-    #[ORM\Column(nullable: true, enumType: WindDirection::class)]
+    #[ORM\ManyToOne(inversedBy: 'sessions')]
     private ?WindDirection $windDirection = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $picture = null;
+
+
 
     public function getId(): ?int
     {
@@ -109,4 +114,18 @@ class Session
 
         return $this;
     }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(string $picture): static
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+
 }

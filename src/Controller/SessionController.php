@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Course;
-use App\Form\CourseType;
+
+use App\Entity\Session;
+
+use App\Form\SessionType;
 use App\Service\SessionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,11 +31,11 @@ final class SessionController extends AbstractController
         // Step 1 : Instancier un formulaire (dans notre cas avec données vide)
         // param1: Quel est le formulaire
         // param2: la donnée par défaut dans le formulaire
-        $course = new Course();
+        $session = new Session();
 
         // Attention on envoie l'addresse mémoire de $course
         // Cela veut dire que l'objet liée au formulaire dans la mémoire de la machine
-        $form = $this->createForm(CourseType::class, $course);
+        $form = $this->createForm(SessionType::class, $session);
 
         // Je récupère les données SI saisies
         // PS: Ca injecte les données du formulaire saisie dans l'adresse mémoire
@@ -43,13 +45,12 @@ final class SessionController extends AbstractController
 
         // Pour savoir si il y'a eu un submit
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($course);
 
-            $course->setPublished(true);
-            $course->setDateCreated(new \DateTimeImmutable("now"));
+
+
 
             // Prévenir qu'on manipule l'objet Course pour le BDD/ORM
-            $em->persist($course);
+            $em->persist($session);
 
             // Envoyer dans la BDD
             $em->flush();
@@ -59,13 +60,13 @@ final class SessionController extends AbstractController
             $this->addFlash("success", "Le cours a été enregistré avec succès !");
 
             // Rediriger sur l'accueil
-            return $this->redirectToRoute('main_home');
+            return $this->redirectToRoute('session_list');
         }
 
         // Attention !
         // On note bien que le formulaire est envoyé dans le front
-        return $this->render('course/create.html.twig', [
-            'courseForm' => $form->createView(),
+        return $this->render('session/create.html.twig', [
+            'sessionForm' => $form->createView(),
         ]);
     }
 }

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Ajouter une session
+{% endblock %}
+
+{% block body %}
+    <h1>Ajouter une session</h1>
+
+    {# Afficher le formulaire courseForm #}
+
+    {# Ouvrir le formulaire #}
+    {{ form_start(sessionForm) }}
+
+    {# Afficher tout les champs #}
+    {{ form_widget(sessionForm) }}
+
+    <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Envoyer</button>
+
+    {# Fermer le formulaire #}
+    {{ form_end(sessionForm) }}
+{% endblock %}
